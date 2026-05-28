@@ -1,0 +1,12 @@
+﻿{
+  "name": "claude-dev-pipeline",
+  "version": "1.0.0",
+  "description": "7-agent full-stack development pipeline: PM → Architect → Backend → Frontend → QA → Reviewer → DevOps",
+  "author": {
+    "name": "contributors"
+  },
+  "homepage": "https://github.com/your-username/claude-dev-pipeline",
+  "repository": "https://github.com/your-username/claude-dev-pipeline",
+  "license": "MIT",
+  "keywords": ["claude", "agents", "pipeline", "devops", "full-stack", "ai"]
+}
