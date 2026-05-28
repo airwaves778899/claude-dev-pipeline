@@ -18,3 +18,7 @@ Thumbs.db
 # Environment
 .env
 .env.local
+
+# But track example outputs
+!examples/.pipeline/
+
