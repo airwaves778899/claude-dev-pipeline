@@ -1,16 +1,25 @@
-﻿{
-  "name": "claude-dev-pipeline",
-  "version": "3.0.0",
-  "description": "9-agent full-stack development pipeline: PM → Architect → Backend → Frontend → QA → Security → Reviewer → DevOps + Troubleshooter for bug fixes",
-  "author": {
-    "name": "contributors"
-  },
-  "homepage": "https://github.com/airwaves778899/claude-dev-pipeline",
-  "repository": "https://github.com/airwaves778899/claude-dev-pipeline",
-  "license": "MIT",
-  "keywords": ["claude", "agents", "pipeline", "devops", "full-stack", "security", "owasp", "ai"],
-  "minClaudeCodeVersion": "1.0.0",
-  "engines": {
-    "claude-code": ">=1.0.0"
-  }
+{
+    "name":  "claude-dev-pipeline",
+    "version":  "3.0.0",
+    "description":  "9-agent full-stack development pipeline: PM -\u003e Architect -\u003e Backend -\u003e Frontend -\u003e QA -\u003e Security -\u003e Reviewer -\u003e DevOps + Troubleshooter for bug fixes",
+    "author":  {
+                   "name":  "contributors"
+               },
+    "homepage":  "https://github.com/airwaves778899/claude-dev-pipeline",
+    "repository":  "https://github.com/airwaves778899/claude-dev-pipeline",
+    "license":  "MIT",
+    "keywords":  [
+                     "claude",
+                     "agents",
+                     "pipeline",
+                     "devops",
+                     "full-stack",
+                     "security",
+                     "owasp",
+                     "ai"
+                 ],
+    "minClaudeCodeVersion":  "1.0.0",
+    "engines":  {
+                    "claude-code":  "\u003e=1.0.0"
+                }
 }
