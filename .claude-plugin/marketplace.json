@@ -1,0 +1,18 @@
+{
+  "name": "claude-dev-pipeline-local",
+  "id": "claude-dev-pipeline-local",
+  "owner": { "name": "airwaves778899" },
+  "metadata": {
+    "description": "9-agent full-stack development pipeline plugin for Claude Code",
+    "version": "3.0.0"
+  },
+  "plugins": [{
+    "name": "claude-dev-pipeline",
+    "source": "./",
+    "description": "9-agent full-stack development pipeline: PM, Architect, Backend, Frontend, QA, Security, Reviewer, DevOps, Troubleshooter",
+    "version": "3.0.0",
+    "author": { "name": "contributors" },
+    "keywords": ["pipeline", "agents", "devops", "full-stack", "security"],
+    "category": "workflow"
+  }]
+}
