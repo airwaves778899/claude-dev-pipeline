@@ -1,4 +1,4 @@
-﻿# claude-dev-pipeline
+# claude-dev-pipeline
 
 > A Claude Code plugin that orchestrates **7 specialized AI agents** to take your feature request all the way from requirements analysis to production deployment — with a human-in-the-loop checkpoint at every phase.
 
@@ -51,7 +51,7 @@ Phases 4a and 4b (Backend + Frontend) run **in parallel**.
 git clone https://github.com/airwaves778899/claude-dev-pipeline.git
 
 # 2. Register as a local marketplace
-claude plugin marketplace add ./claude-dev-pipeline
+claude plugin marketplace add "C:\path\to\claude-dev-pipeline"
 
 # 3. Install
 claude plugin install claude-dev-pipeline

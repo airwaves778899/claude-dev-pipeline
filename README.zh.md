@@ -1,4 +1,4 @@
-﻿# claude-dev-pipeline
+# claude-dev-pipeline
 
 > 一個 Claude Code Plugin，協調 **9 個專業 AI Agent**，從需求分析到生產部署的完整開發流水線。每個關鍵節點都有人工確認機制，確保你隨時掌控方向。
 
@@ -46,7 +46,7 @@ Phase 4a（後端）與 4b（前端）**並行執行**。
 git clone https://github.com/airwaves778899/claude-dev-pipeline.git
 
 # 2. 註冊為本地 Marketplace
-claude plugin marketplace add ./claude-dev-pipeline
+claude plugin marketplace add "C:\path\to\claude-dev-pipeline"   # Windows
 
 # 3. 安裝
 claude plugin install claude-dev-pipeline
