@@ -1,66 +1,66 @@
-﻿# 架構設計 — 使用者驗證功能
-_產出日期：2026-05-28_
+﻿# Architecture Design — User Authentication
+_Date: 2026-05-28_
+_Stack: TypeScript + Node.js + Express_
 
-## 方案 A：最小變更（Minimal Changes）
+## Option A: Minimal Changes
 
-**核心思路**：在現有 Express 路由中直接加入驗證邏輯，使用 `jsonwebtoken` 套件。
+**Core idea**: Add auth logic directly inside existing Express routes using `jsonwebtoken`.
 
-**優點**：改動最少，最快實作，不需要重構現有程式碼
+**Pros**: Fewest changes, fastest to implement, no refactoring needed
 
-**缺點**：驗證邏輯散落各處，難以測試，日後不易擴充（如加入 MFA）
-
----
-
-## 方案 B：乾淨架構（Clean Architecture）
-
-**核心思路**：建立獨立的 `auth` 模組，嚴格分層（Controller → Service → Repository）。Token 刷新邏輯抽象為介面，便於日後替換實作。
-
-**優點**：職責清晰，單元測試容易，支援未來擴充
-
-**缺點**：需要建立更多檔案，短期開發速度較慢
+**Cons**: Auth logic scattered, hard to test, difficult to extend (e.g. adding MFA later)
 
 ---
 
-## 方案 C：務實平衡（Pragmatic Balance）【推薦】
+## Option B: Clean Architecture
 
-**核心思路**：建立 `src/backend/auth/` 子模組，包含 Controller、Service、Repository 三層，但不過度抽象。JWT 邏輯封裝在 `TokenService` 中。
+**Core idea**: Standalone `auth` module with strict layering (Controller → Service → Repository). Token logic abstracted as an interface.
 
-**優點**：結構清晰、可測試，同時避免過度工程化；與現有程式碼風格一致
+**Pros**: Clear separation of concerns, easy to unit test, extensible
 
-**缺點**：比方案 A 多一些前置工作，但遠少於方案 B
+**Cons**: More files upfront, slower initial development
 
 ---
 
-## 選定方案：C — 務實平衡
+## Option C: Pragmatic Balance [Recommended]
 
-### 技術選型
+**Core idea**: `src/backend/auth/` sub-module with Controller, Service, Repository layers — but no over-abstraction. JWT logic encapsulated in `TokenService`.
 
-| 用途 | 套件 |
-|------|------|
-| 密碼雜湊 | `bcryptjs`（cost 12） |
-| JWT 簽發 / 驗證 | `jsonwebtoken`（RS256） |
-| Email 發送 | `nodemailer` + SMTP |
-| 輸入驗證 | `zod` |
+**Pros**: Clean structure, testable, consistent with existing codebase style. Avoids over-engineering.
 
-### API 合約
+**Cons**: More upfront work than Option A, but far less than Option B
 
-| Method | Path | Auth | 說明 |
-|--------|------|------|------|
-| POST | `/auth/register` | ✗ | 註冊新帳號 |
-| POST | `/auth/login` | ✗ | 登入取得 Token |
-| POST | `/auth/logout` | ✓ | 登出（Token 加入黑名單） |
-| POST | `/auth/forgot-password` | ✗ | 發送密碼重設信 |
-| POST | `/auth/reset-password` | ✗ | 以重設 Token 更新密碼 |
+---
 
-### 資料庫 Schema
+## Selected Option: C — Pragmatic Balance
+
+### Tech Stack
+
+| Purpose | Package |
+|---------|---------|
+| Password hashing | `bcryptjs` (cost 12) |
+| JWT sign/verify | `jsonwebtoken` (RS256) |
+| Email sending | `nodemailer` + SMTP |
+| Input validation | `zod` |
+
+### API Contracts
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/auth/register` | ✗ | Create account |
+| POST | `/auth/login` | ✗ | Get access token |
+| POST | `/auth/logout` | ✓ | Invalidate token |
+| POST | `/auth/forgot-password` | ✗ | Send reset email |
+| POST | `/auth/reset-password` | ✗ | Set new password via reset token |
+
+### Database Schema
 
 ```sql
 CREATE TABLE users (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email       VARCHAR(255) UNIQUE NOT NULL,
   password    VARCHAR(255) NOT NULL,  -- bcrypt hash
-  created_at  TIMESTAMPTZ DEFAULT NOW(),
-  updated_at  TIMESTAMPTZ DEFAULT NOW()
+  created_at  TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE password_reset_tokens (
@@ -72,24 +72,20 @@ CREATE TABLE password_reset_tokens (
 );
 ```
 
-### 目錄結構
+### Directory Structure
 
 ```
 src/backend/auth/
-├── auth.controller.ts   # 路由處理與輸入驗證（zod）
-├── auth.service.ts      # 業務邏輯
-├── auth.repository.ts   # 資料存取
-├── token.service.ts     # JWT 簽發 / 驗證
+├── auth.controller.ts   # Route handlers + zod validation
+├── auth.service.ts      # Business logic
+├── auth.repository.ts   # DB access
+├── token.service.ts     # JWT sign/verify
 └── auth.middleware.ts   # requireAuth middleware
 ```
 
-### 安全設計
+### Security Design
 
-- 密碼：bcrypt cost 12，絕不回傳或 log
-- JWT：RS256，24h 有效期，登出後加入 Redis 黑名單
-- 登入失敗：Redis 計數器，5 次失敗鎖定 15 分鐘
-- 重設 Token：SHA-256 雜湊後存 DB，30 分鐘有效，單次使用
-
-### 部署架構
-
-現有單體 Express 服務，不需要額外部署元件。Redis 用於 Token 黑名單與登入失敗計數。
+- Passwords: bcrypt cost 12, never returned or logged
+- JWT: RS256, 24h expiry, logout adds token to Redis blocklist
+- Login failures: Redis counter, 5 failures → 15-minute lock
+- Reset tokens: SHA-256 hashed in DB, 30-minute expiry, single-use

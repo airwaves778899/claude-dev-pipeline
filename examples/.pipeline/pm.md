@@ -1,57 +1,56 @@
-﻿# PRD — 使用者驗證功能（Email + 密碼登入）
-_產出日期：2026-05-28_
+﻿# PRD — User Authentication (Email + Password Login)
+_Date: 2026-05-28_
+_Stack: {{TECH_STACK}}_
 
-## 1. 背景與目標
+## 1. Background & Goals
 
-目前系統沒有任何身份驗證機制，所有使用者都可以存取所有資源。
-本次目標是加入基本的 Email + 密碼登入功能，確保只有已驗證的使用者才能使用核心功能。
+The system currently has no authentication. All users can access all resources.
+Goal: add basic email + password login so only verified users can access core features.
 
-## 2. 使用者故事（User Stories）
+## 2. User Stories
 
-- 作為**訪客**，我想要用 Email 和密碼**註冊帳號**，以便開始使用服務
-- 作為**已註冊使用者**，我想要**登入**，以便存取我的個人資料和功能
-- 作為**已登入使用者**，我想要**登出**，以便在共用裝置上保護我的帳號
-- 作為**忘記密碼的使用者**，我想要透過 Email **重設密碼**，以便重新取得帳號存取權
+- As a **visitor**, I want to **register** with email and password, so I can start using the service
+- As a **registered user**, I want to **log in**, so I can access my data and features
+- As a **logged-in user**, I want to **log out**, so I can protect my account on shared devices
+- As a user who **forgot my password**, I want to **reset it via email**, so I can regain access
 
-## 3. 功能需求
+## 3. Functional Requirements
 
 ### 3.1 Must Have
-- 使用者可以用 Email + 密碼完成註冊
-- 系統在註冊時驗證 Email 格式，密碼至少 8 字元
-- 使用者可以用已註冊的 Email + 密碼登入
-- 登入成功後發放 JWT Token（有效期 24 小時）
-- 使用者可以登出（Token 失效）
+- Register with email + password (email format validated, password ≥ 8 chars)
+- Log in and receive a JWT token (24-hour expiry)
+- Log out (token invalidated)
 
 ### 3.2 Should Have
-- 密碼重設流程（發送重設連結至信箱）
-- 登入失敗次數限制（5 次後鎖定 15 分鐘）
+- Password reset flow (send reset link to email)
+- Login failure rate limiting (lock after 5 attempts for 15 minutes)
 
 ### 3.3 Nice to Have
-- Google / GitHub OAuth 登入
-- 記住我（30 天 Token）
+- Google / GitHub OAuth
+- Remember me (30-day token)
 
-## 4. 非功能需求
+## 4. Non-Functional Requirements
 
-- 登入 API 回應時間 < 300ms（P95）
-- 密碼以 bcrypt（cost factor ≥ 12）雜湊儲存，絕不明文
-- Token 使用 RS256 簽名
+- Login API response time < 300ms (P95)
+- Passwords stored as bcrypt hash (cost ≥ 12) — never plaintext
+- Tokens signed with RS256
 
-## 5. 範圍外（Out of Scope）
+## 5. Out of Scope
 
-- 社群登入（OAuth）
-- 多因素驗證（MFA）
-- 單一登入（SSO）
+- OAuth / social login
+- Multi-factor authentication (MFA)
+- Single Sign-On (SSO)
 
-## 6. 驗收標準
+## 6. Acceptance Criteria
 
-- [ ] `POST /auth/register` 成功時回傳 201，Body 包含 `userId`
-- [ ] `POST /auth/login` 成功時回傳 200，Body 包含 `accessToken`
-- [ ] 使用過期或無效 Token 存取受保護 API 時，回傳 401
-- [ ] 密碼錯誤 5 次後，第 6 次回傳 429 並附鎖定剩餘時間
-- [ ] 密碼在資料庫中以 bcrypt hash 儲存（可驗證）
+- [ ] `POST /auth/register` returns 201 with `userId` on success
+- [ ] `POST /auth/login` returns 200 with `accessToken` on success
+- [ ] Accessing a protected endpoint with expired/invalid token returns 401
+- [ ] After 5 failed login attempts, 6th attempt returns 429 with lock duration
+- [ ] Passwords stored as bcrypt hash (verifiable in DB)
 
-## 7. 技術限制與整合需求
+## 7. Technical Constraints
 
-- 後端：Node.js + TypeScript（現有技術棧）
-- 資料庫：PostgreSQL（現有）
-- Email 發送：待 Architect Agent 決定（SendGrid 或 SMTP）
+- Backend: {{TECH_STACK}} (existing stack)
+- Database: PostgreSQL (existing)
+- Email: to be decided by Architect Agent

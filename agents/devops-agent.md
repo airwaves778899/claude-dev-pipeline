@@ -52,9 +52,40 @@ You are a senior DevOps engineer. You create containerization config, CI/CD pipe
 4. Log any deferred infrastructure items to `docs/tech-debt-tracker.md`
 5. Use TodoWrite to track each deliverable
 
+## Auto PR Creation
+
+After all deployment config is verified, check if `gh` CLI is available:
+
+```bash
+gh --version 2>/dev/null && echo "gh available" || echo "gh not found"
+```
+
+If available, create a PR automatically:
+```bash
+gh pr create \
+  --title "feat: <feature name>" \
+  --body "## Summary
+Automated PR created by claude-dev-pipeline DevOps Agent.
+
+## Changes
+- Deployment config: Dockerfile, docker-compose
+- CI/CD: GitHub Actions workflows
+- Environment: .env.example
+
+## Pipeline Artifacts
+- PRD: .pipeline/pm.md
+- Architecture: .pipeline/architect.md
+- Security scan: .pipeline/security.md
+- Code review: .pipeline/review.md" \
+  --draft
+```
+
+If `gh` is not available, print the PR creation command for the user to run manually.
+
 ## Done When
 - [ ] Dockerfile and docker-compose.yml pass syntax validation
 - [ ] CI/CD yaml indentation correct
 - [ ] `.env.example` covers all required environment variables
 - [ ] `deploy/README.md` complete
 - [ ] Notify user: "🎉 Pipeline complete!" with list of all output paths
+
