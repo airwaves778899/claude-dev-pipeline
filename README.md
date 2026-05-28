@@ -155,7 +155,59 @@ All agents write to `.pipeline/` in your project root:
 
 No configuration needed. The agents use sane defaults. If your project has a `CLAUDE.md` file, the Reviewer agent will automatically reference it for project-specific coding conventions.
 
+
+
 ---
+
+## Stack Profiles
+
+Use `--stack` to skip the tech stack configuration prompt:
+
+```
+/dev-pipeline start "Add payment processing" --stack python
+/dev-pipeline start "Build mobile onboarding" --stack flutter
+```
+
+| Profile | Stack |
+|---------|-------|
+| `ts-node` (default) | TypeScript + Node.js + Express |
+| `ts-react` | TypeScript + React + Vite |
+| `python` | Python + FastAPI |
+| `go` | Go + gin |
+| `flutter` | Flutter + Dart |
+
+See [`stack-profiles/`](./stack-profiles/) for full details and recommended packages.
+
+---
+
+## Knowledge Base (docs/)
+
+The Architect Agent automatically creates a `docs/` directory in your project that persists across pipeline runs:
+
+```
+docs/
+├── design-docs/
+│   └── index.md              # Architecture decision log
+├── tech-debt-tracker.md      # Tracked deferred items (visible, not hidden)
+└── QUALITY_SCORE.md          # QA coverage results per layer
+```
+
+See [`templates/docs/`](./templates/docs/) for the template files.
+
+---
+
+## Git Auto-Commits
+
+If your project is a git repository, the orchestrator automatically commits after each approved phase:
+
+| Phase | Commit message |
+|-------|----------------|
+| PM | `pipeline: PM — add PRD for <feature>` |
+| Architect | `pipeline: Architect — add architecture for <feature>` |
+| Implementation | `pipeline: Implement <feature> (backend + frontend)` |
+| QA | `pipeline: QA — add test suite for <feature>` |
+| Reviewer | `pipeline: Reviewer — code review passed` |
+| DevOps | `pipeline: DevOps — add deployment config` |---
 
 ## Contributing
 
@@ -172,3 +224,4 @@ Pull requests are welcome! Please open an issue first to discuss what you would 
 ## License
 
 [MIT](./LICENSE)
+

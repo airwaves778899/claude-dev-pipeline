@@ -1,6 +1,6 @@
 ﻿{
   "name": "claude-dev-pipeline",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "7-agent full-stack development pipeline: PM → Architect → Backend → Frontend → QA → Reviewer → DevOps",
   "author": {
     "name": "contributors"
