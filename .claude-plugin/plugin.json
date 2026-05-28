@@ -1,6 +1,6 @@
 {
   "name": "claude-dev-pipeline",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "9-agent full-stack development pipeline",
   "author": {"name": "contributors"},
   "homepage": "https://github.com/airwaves778899/claude-dev-pipeline",
