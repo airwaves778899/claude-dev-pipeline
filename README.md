@@ -48,7 +48,7 @@ Phases 4a and 4b (Backend + Frontend) run **in parallel**.
 
 ```bash
 # 1. Clone this repository
-git clone https://github.com/your-username/claude-dev-pipeline.git
+git clone https://github.com/airwaves778899/claude-dev-pipeline.git
 
 # 2. Register as a local marketplace
 claude plugin marketplace add ./claude-dev-pipeline

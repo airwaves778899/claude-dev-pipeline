@@ -49,7 +49,7 @@ Phase 4a（後端）與 4b（前端）**並行執行**。
 
 ```bash
 # 1. Clone 這個倉庫
-git clone https://github.com/your-username/claude-dev-pipeline.git
+git clone https://github.com/airwaves778899/claude-dev-pipeline.git
 
 # 2. 註冊為本地 Marketplace
 claude plugin marketplace add ./claude-dev-pipeline
